@@ -8,7 +8,7 @@ Repository: https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-P
 
  This repository will implement the Group Replication Strategy submitted in Part 2. Code, alternative implementations, reciprocal reviews, decision logs and final replication outputs will be added progressively during Part 3.
 
-## Current milestone 6 Oct 2026 Sheena
+## Current Version 6 Oct 2026 Sheena
 
 This first stage contains the common replication base plus Sheena's two assigned implementations:
 
