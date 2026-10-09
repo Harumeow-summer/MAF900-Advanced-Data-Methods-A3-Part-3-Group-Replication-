@@ -16,7 +16,20 @@ Repository: https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-P
 ## Current Version 9 Oct 2026 Jimmy
 
 - added branch"jimmy-implementation" for decision making
-  WRDS login
+ 
+## Part 2 decision allocation
+
+| Decision point | Alternative A | Alternative B |
+|---|---|---|
+| DP1 — data-availability rule | Sheena | Jimmy |
+| DP2 — market-return proxy | Jimmy | Sheena |
+
+## Data
+
+WRDS/CRSP raw and processed data are licensed and excluded from GitHub.
+Create `config/wrds_credentials.R` locally from the template.
+
+ WRDS login
  
  The WRDS scripts use the following this connection format (if you have already setup your access):
  
@@ -44,19 +57,7 @@ Repository: https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-P
  )
  ```
  Replace the placeholder with your own WRDS username. The password is not stored in the script.
-
-## Part 2 decision allocation
-
-| Decision point | Alternative A | Alternative B |
-|---|---|---|
-| DP1 — data-availability rule | Sheena | Jimmy |
-| DP2 — market-return proxy | Jimmy | Sheena |
-
-## Data
-
-WRDS/CRSP raw and processed data are licensed and excluded from GitHub.
-Create `config/wrds_credentials.R` locally from the template.
-
+ 
 ## Reproducibility
 
 Common scripts live in `code/common/`. Alternative-development folders are
