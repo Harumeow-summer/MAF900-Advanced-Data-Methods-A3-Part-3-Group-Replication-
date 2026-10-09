@@ -16,7 +16,7 @@ Repository: https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-P
 ## Current Version 9 Oct 2026 Jimmy
 
 - added branch"jimmy-implementation" for decision making
- ## WRDS login
+  WRDS login
  
  The WRDS scripts use the following this connection format (if you have already setup your access):
  
@@ -31,7 +31,7 @@ Repository: https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-P
  )
  ```
  Or
- # Create a fresh WRDS connection
+ Create a fresh WRDS connection
  ```r
  wrds <- DBI::dbConnect(
    RPostgres::Postgres(),
