@@ -1,0 +1,66 @@
+---
+title: "Fama and MacBeth (1973) Replication — Comparison with Published Results"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(here)
+```
+
+# Replication scope
+
+The final group specification uses Decision 1A (strict data availability) and
+Decision 2B (reconstructed NYSE equal-weighted market proxy). Published FM
+results are treated as diagnostic benchmarks rather than acceptance criteria.
+
+# Table 1
+
+```{r}
+table1 <- read_csv(
+  here("output", "tables", "table1_final.csv"),
+  show_col_types = FALSE
+)
+
+table1
+```
+
+Report whether the nine eligible-security counts are broadly consistent with
+the original table and explain any differences using the documented sample
+rule and CRSP data vintage.
+
+# Table 2
+
+```{r}
+table2 <- read_csv(
+  here("output", "tables", "table2_final.csv"),
+  show_col_types = FALSE
+)
+
+table2
+```
+
+Check whether portfolio beta generally increases from low-beta to high-beta
+portfolios and describe the residual-risk, R-squared, and diversification
+patterns.
+
+# Table 3
+
+```{r}
+table3 <- read_csv(
+  here("output", "tables", "table3_final.csv"),
+  show_col_types = FALSE
+)
+
+table3
+```
+
+Compare the signs and magnitudes of the main coefficients with FM. Report both
+similarities and differences. Do not reinterpret a difference as a failure
+simply because the modern CRSP implementation is not numerically identical.
+
+# Decision-point evidence
+
+Decision 1 and Decision 2 comparison outputs are stored in
+`output/tables/`. The methodological reasons for the final choices are
+documented in `decisions/decision1.md` and `decisions/decision2.md`.

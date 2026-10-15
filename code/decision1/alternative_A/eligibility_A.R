@@ -1,7 +1,7 @@
 # =============================================================================
 # Decision 1, Alternative A — strict valid-return rule
 # Developer: Sheena Chen
-# Reviewer: Jimmy Zhang (review happens later)
+# Reviewer: Jimmy Zhang
 # -----------------------------------------------------------------------------
 # Part 2 definition:
 #   available = NYSE common stock with a VALID RETURN in first testing month

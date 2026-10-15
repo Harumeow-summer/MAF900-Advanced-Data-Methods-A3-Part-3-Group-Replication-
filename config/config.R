@@ -1,22 +1,27 @@
 # config/config.R
 # Shared parameters for the Fama-MacBeth (1973) replication.
+#
+# Final group decisions:
+#   Decision 1 = A (Sheena): strict valid-return rule
+#   Decision 2 = B (Sheena): reconstructed NYSE equal-weighted market proxy
+#
+# Jimmy's alternatives remain in the repository as required comparison branches.
 
 SAMPLE_START <- as.Date("1926-01-01")
 SAMPLE_END   <- as.Date("1968-06-30")
 
-# Part 2 Decision 1, Alternative B:
-# allow at most 3 missing estimation-month returns (= 5% of 60 months).
+# Decision 1, Alternative B sensitivity parameter.
+# It is retained only for the comparison branch.
 D1B_MAX_MISSING_EST <- 3L
 
-# IMPORTANT:
-# This is a documented implementation parameter, not one of the two formal
-# decision points. Keep it visible and justify/check it before final submission.
-MIN_OBS_UPDATE <- 24L
+# Final agreed choices.
+FINAL_DECISION1 <- "A"
+FINAL_DECISION2 <- "B"
 
-# Do NOT set these to A/B until the reciprocal reviews and joint decision records
-# have been completed.
-FINAL_DECISION1 <- NA_character_
-FINAL_DECISION2 <- NA_character_
+# With Decision 1A selected, every eligible stock begins with 60 valid
+# estimation-month returns. Annual beta updates use an expanding history,
+# so the final workflow keeps the same minimum-information standard.
+MIN_OBS_UPDATE <- 60L
 
 PERIODS <- data.frame(
   period     = 1:9,
@@ -58,6 +63,7 @@ N_PORTFOLIOS <- 20L
 PATH_RAW  <- "data/raw"
 PATH_PROC <- "data/processed"
 PATH_TAB  <- "output/tables"
+PATH_LOG  <- "logs"
 
 ym <- function(d) {
   as.integer(format(d, "%Y")) * 12L + as.integer(format(d, "%m"))

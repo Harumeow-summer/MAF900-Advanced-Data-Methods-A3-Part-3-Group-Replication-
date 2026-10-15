@@ -140,7 +140,7 @@ portfolio_estimation_stats <- function(members, sec_est, panel, market,
 # ---------------------------------------------------------------------------
 run_testing_period <- function(panel, market, members,
                                est_start, test_start, test_end,
-                               cfg_min_obs = 24L) {
+                               cfg_min_obs = 60L) {
   ym_es <- ym(est_start); ym_ts <- ym(test_start); ym_te <- ym(test_end)
   test_months <- ym_ts:ym_te
   test_years  <- unique((test_months - 1L) %/% 12L)   # integer year index

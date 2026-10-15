@@ -1,7 +1,7 @@
 # =============================================================================
 # Decision 2, Alternative B — reconstructed EW NYSE common-stock index
 # Developer: Sheena Chen
-# Reviewer: Jimmy Zhang (review happens later)
+# Reviewer: Jimmy Zhang
 # -----------------------------------------------------------------------------
 # Reconstruct Rm each month as the simple average of VALID returns for all
 # date-valid NYSE common stocks. Do not restrict the index to DP1-eligible

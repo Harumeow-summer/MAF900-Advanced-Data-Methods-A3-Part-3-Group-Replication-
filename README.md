@@ -1,64 +1,407 @@
-# Fama & MacBeth (1973) Replication
+# MAF900 Assessment 3 — Fama and MacBeth (1973) Replication
+
+## Project title
+
+**Collaborative Replication of Fama and MacBeth (1973): Tables 1, 2 and 3**
 
 MAF900 Advanced Data Methods — Assessment 3 Part 3  
-Group: Qixin (Sheena) Chen and Yuyao (Jimmy) Zhang  
-Repository: https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-Part-3-Group-Replication
+Group members: **Qixin (Sheena) Chen** and **Jimmy Zhang**
 
-## Update note: 05 Oct 2026
+Repository:  
+https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-Part-3-Group-Replication-
 
- This repository will implement the Group Replication Strategy submitted in Part 2. Code, alternative implementations, reciprocal reviews, decision logs and final replication outputs will be added progressively during Part 3.
+## Project purpose
 
-## Current Version 6 Oct 2026 Sheena
+This repository implements the Group Replication Strategy developed in Part 2.
 
-- DP1 Alternative A: strict valid-return rule;
-- DP2 Alternative B: reconstructed NYSE equal-weighted market proxy.
+The Part 3 workflow is:
 
-## Current Version 9 Oct 2026 Jimmy
+**common replication → alternative implementations → reciprocal review → group decision → agreed implementation → final replication**
 
-- added branch"jimmy-implementation" for decision making
- 
-## Part 2 decision allocation
+The repository retains both students' alternative implementations, the
+reciprocal review files, the decision records, and a separate `code/final/`
+workflow that reproduces the agreed Tables 1-3 without sourcing the
+alternative-development folders.
 
-| Decision point | Alternative A | Alternative B |
+## Replication target
+
+The project replicates selected procedures and results from:
+
+Fama, E. F., & MacBeth, J. D. (1973). *Risk, Return, and Equilibrium:
+Empirical Tests*. Journal of Political Economy, 81(3), 607-636.
+
+The target outputs are:
+
+- Table 1 — security availability and eligibility across the nine periods;
+- Table 2 — beta-sorted portfolio characteristics;
+- Table 3 — monthly cross-sectional risk-return regressions and time-series
+  summaries.
+
+## Sample
+
+- Original FM sample window: January 1926 to June 1968
+- Frequency: monthly
+- Security universe: date-valid NYSE ordinary common stocks
+- Common-stock filter: `exchcd = 1` and `shrcd` in `{10, 11}`
+- Portfolio count: 20
+- Main data source: CRSP through WRDS
+
+## The two replication decision points
+
+### Decision 1 — Table 1 data-availability rule
+
+Part 2 identified ambiguity in the statement that a security must have data
+for all five years of the estimation period and at least four years of the
+formation period.
+
+**Alternative A — Sheena**
+- valid return in the first testing month;
+- 60/60 valid estimation-month returns;
+- at least 48 valid formation-month returns.
+
+**Alternative B — Jimmy**
+- listed in the first testing month;
+- continuously listed throughout the 60-month estimation window;
+- at least 57 valid estimation returns;
+- at least 48 valid formation returns.
+
+**Final decision: Alternative A (Sheena).**
+
+Both implementations are technically feasible. A is selected because it is
+the more literal and reproducible monthly-data interpretation and does not add
+an arbitrary missing-month tolerance. B remains in the repository as a
+sensitivity specification. The decision is methodological; the group does not
+select the rule simply because it produces counts closer to FM.
+
+See `decisions/decision1.md` for the full comparison.
+
+### Decision 2 — Table 2 market-return proxy
+
+FM use Fisher's Arithmetic Index, an equal-weighted NYSE market return.
+
+**Alternative A — Jimmy**
+- uses CRSP's maintained equal-weighted market return (`ewretd`);
+- simple and highly reproducible;
+- does not guarantee a constant NYSE-only universe over the full sample.
+
+**Alternative B — Sheena**
+- reconstructs an equal-weighted monthly return from all date-valid NYSE
+  common stocks;
+- uses the same transparent exchange/share-code definition across the sample;
+- retains monthly constituent counts as a diagnostic.
+
+**Final decision: Alternative B (Sheena).**
+
+Both implementations are technically feasible. B is selected because it more
+directly matches Fisher's stated NYSE-only equal-weighted concept. A is kept as
+a benchmark.
+
+See `decisions/decision2.md` for the full comparison.
+
+## Collaboration map
+
+| Task | Decision 1 | Decision 2 |
 |---|---|---|
-| DP1 — data-availability rule | Sheena | Jimmy |
-| DP2 — market-return proxy | Jimmy | Sheena |
+| Alternative A developer | Sheena | Jimmy |
+| Alternative B developer | Jimmy | Sheena |
+| Review of A | Jimmy | Sheena |
+| Review of B | Sheena | Jimmy |
+| Final decision | Joint | Joint |
 
-## Data
+The repository history should show the implementation, reciprocal review,
+revision, and final-decision stages progressively rather than as one final
+upload.
 
-WRDS/CRSP raw and processed data are licensed and excluded from GitHub.
-Create `config/wrds_credentials.R` locally from the template.
+## Data sources
 
- WRDS login
- 
- The WRDS scripts use the following this connection format (if you have already setup your access):
- 
- ```r
- wrds <- dbConnect(
-   Postgres(),
-   host = "wrds-pgdata.wharton.upenn.edu",
-   port = 9737,
-   dbname = "wrds",
-   sslmode = "require",
-   user = "YOUR_WRDS_USERNAME"
- )
- ```
- Or
- Create a fresh WRDS connection
- ```r
- wrds <- DBI::dbConnect(
-   RPostgres::Postgres(),
-   host = "wrds-pgdata.wharton.upenn.edu",
-   port = 9737,
-   dbname = "wrds",
-   sslmode = "require",
-   user = "YOUR_WRDS_USERNAME",
-   password = rstudioapi::askForPassword("Enter your WRDS password")
- )
- ```
- Replace the placeholder with your own WRDS username. The password is not stored in the script.
- 
-## Reproducibility
+### CRSP through WRDS
 
-Common scripts live in `code/common/`. Alternative-development folders are
-kept separate from the final agreed replication.
+The project uses monthly CRSP stock returns, names history, delisting data,
+and the CRSP equal-weighted market series.
+
+Required raw files are generated by:
+
+`code/common/01_download_crsp.R`
+
+Raw and processed CRSP data are licensed and therefore excluded from GitHub.
+
+### Riskless rate
+
+The replication uses a one-month Treasury-bill/risk-free series obtained
+through the WRDS Fama-French monthly factors table and converts the monthly
+rate to decimal units.
+
+## Packages
+
+Install the required packages once in the RStudio Console:
+
+```r
+install.packages(c(
+  "tidyverse",
+  "DBI",
+  "RPostgres",
+  "dbplyr",
+  "here",
+  "rmarkdown",
+  "knitr",
+  "rstudioapi"
+))
+```
+
+The main workflow uses:
+
+```r
+library(tidyverse)
+library(DBI)
+library(here)
+library(RPostgres)
+```
+
+`rstudioapi` is called only for the secure WRDS password prompt and does not
+need to be attached with `library()`.
+
+## WRDS login
+
+No local credentials file is required.
+
+When `code/common/01_download_crsp.R` is run, the script asks for:
+
+1. your WRDS username in the R Console; and
+2. your WRDS password through RStudio's secure password prompt.
+
+The connection code is:
+
+```r
+wrds_user <- readline("Enter your WRDS username: ")
+
+wrds <- DBI::dbConnect(
+  RPostgres::Postgres(),
+  host = "wrds-pgdata.wharton.upenn.edu",
+  port = 9737,
+  dbname = "wrds",
+  sslmode = "require",
+  user = wrds_user,
+  password = rstudioapi::askForPassword("Enter your WRDS password")
+)
+```
+
+The username and password are used only for the current R session and are not
+stored in the repository.
+
+Do not hard-code personal WRDS credentials in any committed script.
+
+## Project structure
+
+```text
+fm1973-replication/
+├── fm1973-replication.Rproj
+├── README.md
+├── RUN_ME.R
+├── .gitignore
+├── config/
+│   └── config.R
+├── code/
+│   ├── common/
+│   │   ├── 00_setup.R
+│   │   ├── 01_download_crsp.R
+│   │   ├── 02_build_panel.R
+│   │   └── 04_functions_fm.R
+│   ├── decision1/
+│   │   ├── alternative_A/
+│   │   │   └── eligibility_A.R
+│   │   ├── alternative_B/
+│   │   │   └── 01_run_eligibility_B.R
+│   │   └── compare_decision1.R
+│   ├── decision2/
+│   │   ├── alternative_A/
+│   │   │   └── 01_run_market_proxy_A.R
+│   │   ├── alternative_B/
+│   │   │   └── market_proxy_B.R
+│   │   └── compare_decision2.R
+│   └── final/
+│       ├── 01_agreed_eligibility.R
+│       ├── 02_agreed_market_proxy.R
+│       └── run_all.R
+├── reviews/
+│   ├── decision1_A_review.md
+│   ├── decision1_B_review.md
+│   ├── decision2_A_review.md
+│   └── decision2_B_review.md
+├── decisions/
+│   ├── decision1.md
+│   └── decision2.md
+├── data/
+│   ├── raw/
+│   └── processed/
+├── output/
+│   └── tables/
+├── logs/
+└── report/
+    └── comparison_with_fm.Rmd
+```
+
+## Why the structure is separated
+
+`code/common/` contains code used by both students.
+
+`code/decision1/` and `code/decision2/` preserve both alternative
+implementations so the methodological ambiguity remains visible.
+
+`reviews/` records the reciprocal code/method review.
+
+`decisions/` explains which implementation is selected and why.
+
+`code/final/` contains copies of the agreed methods and does not source the
+alternative folders. This lets another researcher reproduce the final Tables
+1-3 directly while still being able to audit how the group reached the final
+choices.
+
+## First-time run order
+
+### Easiest method
+
+1. Open `fm1973-replication.Rproj` in RStudio.
+2. Open `RUN_ME.R`.
+3. Click **Source**.
+4. If raw WRDS files are missing, enter your WRDS username in the Console and
+   your password in the RStudio password prompt.
+
+`RUN_ME.R` will:
+- download the WRDS data if the local raw files do not already exist;
+- build the common stock-month panel;
+- run both Decision 1 alternatives and sensitivity diagnostics;
+- run both Decision 2 market proxies and Table 2 comparisons;
+- reproduce the agreed Tables 1-3;
+- render the concise FM comparison report when `rmarkdown` is installed.
+
+### Manual method
+
+Run these scripts in order:
+
+1. `code/common/00_setup.R`
+2. `code/common/01_download_crsp.R`
+3. `code/common/02_build_panel.R`
+4. `code/decision1/compare_decision1.R`
+5. `code/decision2/compare_decision2.R`
+6. `code/final/run_all.R`
+7. Render `report/comparison_with_fm.Rmd`
+
+## Decision outputs
+
+### Decision 1
+
+- `decision1_comparison.csv`
+- `decision1_overlap.csv`
+- `decision1_B_sensitivity.csv`
+
+These show the sample effect of strict versus tolerance-based data
+availability rules.
+
+### Decision 2
+
+- `decision2_market_series.csv`
+- `decision2_market_summary.csv`
+- `table2_altA.csv`
+- `table2_altB.csv`
+- `decision2_beta_comparison.csv`
+
+These show how the market proxy changes the market series, portfolio beta
+levels/ranks, and Table 2 statistics.
+
+## Final outputs
+
+The final agreed replication writes:
+
+- `output/tables/table1_final.csv`
+- `output/tables/table2_final.csv`
+- `output/tables/gamma_monthly.csv`
+- `output/tables/table3_final.csv`
+
+The final specification is:
+
+- Decision 1 = Alternative A (Sheena)
+- Decision 2 = Alternative B (Sheena)
+
+Jimmy's alternatives remain part of the assessed collaborative record and are
+not deleted.
+
+## Reproducibility rules
+
+- Do not use hard-coded local paths such as `C:/Users/...`.
+- Do not hard-code or commit WRDS usernames/passwords.
+- Do not upload raw or processed CRSP data to GitHub.
+- Do not manually edit table outputs.
+- Do not change a decision only because another version is closer to the
+  published FM numbers.
+- Keep both alternative implementations and all four reciprocal reviews.
+- Record review-triggered revisions in Git history.
+- The final folder must reproduce Tables 1-3 without sourcing the alternative
+  development folders.
+
+## Known implementation choices
+
+### Delisting returns
+
+The common panel compounds a delisting return with the final monthly return
+when both are available, and uses the delisting return alone when the regular
+return is missing. This choice is documented because FM do not give a modern
+CRSP delisting-file rule.
+
+### Annual beta updating
+
+The testing-period engine re-estimates beta each January using an expanding
+history. Because final Decision 1A requires a complete 60-month estimation
+history, the final workflow keeps a minimum of 60 valid historical
+observations for annual updates.
+
+### Portfolio construction
+
+The project follows the 20 beta-sorted portfolio design and uses a
+reproducible PERMNO tie-break when exact formation-beta ties occur.
+
+## Comparison with the published paper
+
+The published FM results are treated as diagnostic benchmarks, not acceptance
+criteria. Numerical differences can arise from revised CRSP data, modern
+security-universe filters, delisting treatment, and the unavoidable mapping
+of historical procedures to contemporary data.
+
+The generated report is:
+
+`report/comparison_with_fm.html`
+
+The source is:
+
+`report/comparison_with_fm.Rmd`
+
+## AI-use disclosure
+
+Generative AI tools, including ChatGPT and Claude, were used for design
+discussion, coding support, debugging, documentation planning, and language
+refinement.
+
+AI suggestions were not treated as evidence or accepted automatically.
+The two group members remain responsible for:
+- the methodological alternatives assigned to them;
+- reciprocal review of the other member's code;
+- review-triggered revisions;
+- the final Decision 1 and Decision 2 choices;
+- the interpretation and submitted replication.
+
+No WRDS credentials or licensed CRSP raw/processed data were supplied to
+generative AI tools.
+
+## Latest login change
+
+The earlier local credentials-file / PostgreSQL password-file approach has been removed.
+The current project uses interactive WRDS login at run time so a new user can
+clone the repository and reproduce the workflow without creating a separate
+credentials file.
+
+## References
+
+Fama, E. F., & MacBeth, J. D. (1973). Risk, return, and equilibrium:
+Empirical tests. *Journal of Political Economy*, 81(3), 607-636.
+
+Fisher, L. (1966). Some new stock-market indexes. *Journal of Business*,
+39(1, Part 2), 191-225.

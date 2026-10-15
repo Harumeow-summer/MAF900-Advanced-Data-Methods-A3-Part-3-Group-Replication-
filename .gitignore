@@ -3,16 +3,11 @@
 .Ruserdata
 .Rproj.user/
 
-# Credentials
-config/wrds_credentials.R
-
-# Licensed CRSP / WRDS data
+# Licensed WRDS/CRSP data
 data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
-# Temporary / rendered files
-*.html
-*.pdf
+# Temporary files
 *.log
