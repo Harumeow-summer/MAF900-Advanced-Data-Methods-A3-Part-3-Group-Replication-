@@ -5,7 +5,7 @@
 **Collaborative Replication of Fama and MacBeth (1973): Tables 1, 2 and 3**
 
 MAF900 Advanced Data Methods — Assessment 3 Part 3  
-Group members: **Qixin (Sheena) Chen** and **Jimmy Zhang**
+Group members: **Qixin (Sheena) Chen** and **Jimmy (Yuyao) Zhang**
 
 Repository:  
 https://github.com/Harumeow-summer/MAF900-Advanced-Data-Methods-A3-Part-3-Group-Replication-
